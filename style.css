@@ -29,18 +29,26 @@
 .game-side-panel .secondary-buttons{width:100%;max-width:188px}
 .game-side-panel .partner-card{width:100%;max-width:172px}
 @media(max-width:740px) and (orientation:portrait){
-  .play-area{grid-template-columns:minmax(0,1fr) 122px;grid-template-rows:auto auto;align-items:start;gap:12px 9px}
-  .board-column{grid-column:1;grid-row:1}
-  .game-pad-panel{grid-column:1;grid-row:2}
-  .game-side-panel{grid-column:2;grid-row:1 / span 2;justify-content:start}
-  .dpad{width:min(100%,192px);gap:3px}
-  .dpad .control-btn{min-height:0}
-  .dpad .control-symbol{font-size:22px}
-  .game-side-panel .control-rotate{min-height:100px}
-  .game-side-panel .control-rotate .control-symbol{font-size:46px}
-  .game-side-panel .secondary-buttons{display:flex;flex-direction:column}
-  .game-side-panel .next-card canvas{max-width:96px}
-  .pad-caption{font-size:10px}
+  .play-area{grid-template-columns:minmax(0,1fr) 128px;grid-template-rows:auto auto;align-items:start;gap:10px 10px;max-width:100%}
+  .board-column{grid-column:1;grid-row:1 / span 2;align-self:start}
+  .game-side-panel{grid-column:2;grid-row:1;justify-content:start;gap:9px}
+  .game-pad-panel{grid-column:2;grid-row:2;justify-content:start;gap:6px}
+  .game-side-panel .next-card{max-width:128px;padding:10px 8px}
+  .game-side-panel .next-card canvas{max-width:92px}
+  .game-side-panel .control-rotate{max-width:128px;min-height:98px;border-radius:20px}
+  .game-side-panel .control-rotate .control-symbol{font-size:44px}
+  .game-side-panel .control-rotate span:last-child{font-size:16px}
+  .game-side-panel .partner-card{max-width:128px;padding:10px 8px}
+  .game-side-panel .secondary-buttons{display:flex;flex-direction:column;max-width:128px;padding:8px;gap:7px}
+  .game-side-panel .secondary-buttons button{font-size:11px;padding:10px 6px}
+  .pad-label{font-size:12px}
+  .dpad{width:128px;gap:4px}
+  .dpad .control-btn{min-height:0;padding:2px 0;border-radius:12px}
+  .dpad .control-symbol{font-size:20px}
+  .dpad .control-btn span:last-child{font-size:10px}
+  .pad-center{border-radius:12px;font-size:19px}
+  .pad-caption{font-size:9px;line-height:1.25;max-width:120px}
+  .board-tip{margin-top:10px;font-size:11px}
 }
 @media(orientation:landscape) and (pointer:coarse) and (max-height:620px){
   html,body{height:100%;overflow:hidden;overscroll-behavior:none}
@@ -57,7 +65,7 @@
   .score-box{flex:1;max-width:154px;min-width:0;padding:2px 6px 1px;border-radius:9px;flex-direction:row;justify-content:space-evenly;gap:5px}
   .score-box>span{font-size:10px}
   .score-box strong{font-size:20px;line-height:1}
-  .play-area{flex:1;min-height:0;height:100%;width:100%;max-width:none;display:grid;grid-template-columns:minmax(128px,1fr) max-content minmax(128px,1fr);align-items:stretch;justify-items:center;gap:clamp(10px,3.4vw,26px);margin:0 auto}
+  .play-area{flex:1;min-height:0;height:100%;width:min(100%,920px);max-width:920px;display:grid;grid-template-columns:minmax(112px,150px) max-content minmax(112px,150px);align-items:stretch;justify-content:center;justify-items:center;gap:clamp(8px,2vw,18px);margin:0 auto}
   .board-column{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:0;min-width:0}
   .board-frame{box-sizing:border-box;max-width:none;width:auto;height:100%;aspect-ratio:1/2;margin:0;padding:3px;border:2px solid white;border-radius:9px;box-shadow:0 3px 0 #bed5ed,0 5px 10px #2e588b25}
   .board-frame canvas{width:100%;height:100%;aspect-ratio:1/2;border-radius:5px}
