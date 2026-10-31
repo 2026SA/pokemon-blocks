@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#4b8be8">
+  <meta name="description" content="小学1年生でもあそびやすい、4つのステージがあるブロックパズルの試作品。">
+  <title>ポケモンと ブロックパズル！｜しさくばん</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="game.js"></script>
+</head>
+<body>
+  <div class="background-dots" aria-hidden="true"></div>
+  <main class="app">
+    <section id="homeScreen" class="home-screen">
+      <header class="hero">
+        <div class="hero-topline"><span class="eyebrow">⭐ こどもむけ ブロックパズル</span><span class="draft-tag">しさくばん</span></div>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="hero-hello">⚡ ピカチュウたちと あそぼう！</p>
+            <h1>ポケモンと<br><span>ブロックパズル！</span></h1>
+            <p class="hero-desc">ブロックを よこに いちれつ そろえると、<br class="wide-only">きえて スコアが ふえるよ！</p>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="art-spark spark-a">✦</div><div class="art-spark spark-b">✦</div>
+            <div class="art-blob blob-yellow"><span>⚡</span></div>
+            <div class="art-blob blob-blue"><span>💧</span></div>
+            <div class="art-blob blob-green"><span>🌱</span></div>
+            <div class="art-block block-a"></div><div class="art-block block-b"></div><div class="art-block block-c"></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="section-card stage-section" aria-labelledby="stageHeading">
+        <div class="section-heading"><span class="step-mark">①</span><div><h2 id="stageHeading">ステージを えらぼう</h2><p>まずは <strong>レベル1</strong> が おすすめ！</p></div></div>
+        <div class="stage-grid" id="stageGrid" role="group" aria-label="ステージの せんたく">
+          <button type="button" class="stage-card selected" data-stage="0" aria-pressed="true">
+            <span class="stage-number">レベル 1</span><span class="stage-emoji electric">⚡</span>
+            <strong>はじめて</strong><span class="stage-partner">ピカチュウ</span><small>とっても ゆっくり</small><span class="selected-check">✓ えらんだよ</span>
+          </button>
+          <button type="button" class="stage-card" data-stage="1" aria-pressed="false">
+            <span class="stage-number">レベル 2</span><span class="stage-emoji grass">🌱</span>
+            <strong>ゆっくり</strong><span class="stage-partner">フシギダネ</span><small>すこし はやい</small><span class="selected-check">✓ えらんだよ</span>
+          </button>
+          <button type="button" class="stage-card" data-stage="2" aria-pressed="false">
+            <span class="stage-number">レベル 3</span><span class="stage-emoji water">💧</span>
+            <strong>ふつう</strong><span class="stage-partner">ゼニガメ</span><small>どんどん おちる</small><span class="selected-check">✓ えらんだよ</span>
+          </button>
+          <button type="button" class="stage-card" data-stage="3" aria-pressed="false">
+            <span class="stage-number">レベル 4</span><span class="stage-emoji fire">🔥</span>
+            <strong>チャレンジ</strong><span class="stage-partner">ヒトカゲ</span><small>はやい！</small><span class="selected-check">✓ えらんだよ</span>
+          </button>
+        </div>
+        <button class="start-button" type="button" id="startButton"><span aria-hidden="true">▶</span> この ステージで あそぶ！</button>
+        <p class="start-hint">🎯 いちれつ そろえると <strong>100てん！</strong> たくさん けしてみよう！</p>
+        <p class="landscape-hint">📱 スマホを <strong>よこむき</strong> にして あそんでね！</p>
+      </section>
+
+      <section class="section-card how-section" id="howSection" aria-labelledby="howHeading">
+        <div class="section-heading"><span class="step-mark violet">②</span><div><h2 id="howHeading">あそびかたの れい</h2><p>3つの ことを おぼえよう！</p></div></div>
+        <div id="exampleCards" class="example-grid">
+          <article class="example-card"><div class="example-icon">①</div><div class="example-visual move-example" aria-hidden="true"><span class="arrow-demo">←</span><div class="mini-piece yellow-piece"><i></i><i></i><i></i><i></i></div><span class="arrow-demo">→</span></div><h3>よこに うごかす</h3><p>ひだりの じゅうじキーで<br>ばしょを きめるよ。</p></article>
+          <article class="example-card"><div class="example-icon">②</div><div class="example-visual rotate-example" aria-hidden="true"><div class="mini-piece purple-piece t-piece"><i></i><i></i><i></i><i></i></div><span class="rotate-demo">↻</span></div><h3>くるりと まわす</h3><p>みぎの「くるり」で<br>ブロックが まわるよ。</p></article>
+          <article class="example-card"><div class="example-icon">③</div><div class="example-visual fill-example" aria-hidden="true"><div class="line-squares"><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="shine-demo">✨</span></div><h3>よこ いちれつ！</h3><p>すきまなく そろうと<br>きえて スコアアップ！</p></article>
+        </div>
+        <div class="how-note"><span>💡</span> うえまで ブロックが たまったら ゲームおわり。もういちど ちょうせんできるよ！</div>
+      </section>
+      <footer class="site-footer">ポケモンを テーマにした、ひこうしきの がくしゅうよう しさくばんです。<br>こうしきの イラストや ロゴは つかっていません。</footer>
+    </section>
+
+    <section id="gameScreen" class="game-screen hidden" aria-label="ブロックパズル ゲーム">
+      <header class="game-header">
+        <button type="button" class="back-button" id="backButton" aria-label="ステージを えらぶ がめんに もどる">‹ <span>ステージ</span></button>
+        <div class="game-heading"><span>⚡ ポケモンと</span><strong>ブロックパズル！</strong></div>
+        <button type="button" class="pause-button" id="pauseButton">Ⅱ <span>とめる</span></button>
+      </header>
+      <div class="score-panel" aria-label="ゲームの きろく">
+        <div class="score-box main-score"><span>⭐ スコア</span><strong id="scoreValue" aria-live="off">0</strong></div>
+        <div class="score-box"><span>✨ けした れつ</span><strong id="linesValue">0</strong></div>
+        <div class="score-box"><span>🏅 レベル</span><strong id="levelValue">1</strong></div>
+        <div class="score-box best-box"><span>🏆 さいこう</span><strong id="bestValue">0</strong></div>
+      </div>
+      <div class="play-area">
+        <aside class="game-pad-panel" aria-label="ひだりの じゅうじキー">
+          <span class="pad-label">🎮 じゅうじキー</span>
+          <div class="dpad" role="group" aria-label="ブロックを うごかす">
+            <button class="control-btn pad-up" type="button" data-action="drop" aria-label="いちばん したまで おとす"><span class="control-symbol">▲</span><span>すとん!</span></button>
+            <button class="control-btn pad-left" type="button" data-action="left" aria-label="ひだりへ うごかす"><span class="control-symbol">◀</span><span>ひだり</span></button>
+            <span class="pad-center" aria-hidden="true">✦</span>
+            <button class="control-btn pad-right" type="button" data-action="right" aria-label="みぎへ うごかす"><span class="control-symbol">▶</span><span>みぎ</span></button>
+            <button class="control-btn pad-down" type="button" data-action="down" aria-label="したへ 1マス おとす"><span class="control-symbol">▼</span><span>したへ</span></button>
+          </div>
+          <p class="pad-caption">ながく おすと つづけて うごくよ</p>
+        </aside>
+        <div class="board-column">
+          <div class="board-frame"><canvas id="board" width="600" height="1200" role="img" aria-label="ブロックが おちてくる ゲームがめん"></canvas><div class="board-toast hidden" id="boardToast" aria-live="polite"></div></div>
+          <p class="board-tip">🌟 <span id="gameTip">すきまを つくらずに ならべよう！</span></p>
+        </div>
+        <aside class="game-side-panel" aria-label="みぎの かいてんボタンと つぎの ブロック">
+          <div class="next-card"><span class="aside-label">つぎの ブロック</span><canvas id="nextBoard" width="216" height="176" role="img" aria-label="つぎに おちてくる ブロック"></canvas></div>
+          <button class="control-btn control-rotate" type="button" data-action="rotate" aria-label="ブロックを くるりと まわす"><span class="control-symbol">↻</span><span>くるり</span></button>
+          <div class="partner-card"><span id="partnerEmoji" aria-hidden="true">⚡</span><span id="partnerName">ピカチュウ</span></div>
+          <div class="secondary-buttons"><button id="helpButton" type="button">❔ あそびかた</button><button id="soundButton" type="button" aria-pressed="false">🔇 おと オフ</button></div>
+        </aside>
+      </div>
+      <p class="pc-hint">⌨️ パソコンなら ← →：いどう ／ ↑：くるり ／ ↓：したへ ／ スペース：すとん！ ／ P：とめる</p>
+      <footer class="site-footer compact">ポケモンを テーマにした、ひこうしきの しさくばんです。</footer>
+    </section>
+  </main>
+
+  <div class="overlay hidden" id="gameOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="dialog"><div id="modalEmoji" class="dialog-emoji" aria-hidden="true">⏸️</div><h2 id="modalTitle">ちょっと きゅうけい！</h2><p id="modalMessage">いつでも つづきから あそべるよ。</p><div id="modalScore" class="modal-score hidden"><span>⭐ こんかいの スコア</span><strong id="finalScore">0</strong></div><div class="modal-actions"><button type="button" id="resumeButton" class="modal-primary">▶ つづける</button><button type="button" id="retryButton">🔄 もういちど</button><button type="button" id="modalHomeButton">🏠 ステージを えらぶ</button></div></div>
+  </div>
+  <div class="overlay hidden" id="helpOverlay" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+    <div class="dialog help-dialog"><h2 id="helpModalTitle">🌈 あそびかた</h2><div id="helpExamples"></div><p class="help-extra">じゅうじキーの「▲ すとん！」で、ブロックが いちばん したまで おちるよ。<br>スマホを よこむきにして、はじめは ゆっくり あそんでみよう！</p><button type="button" id="closeHelpButton" class="modal-primary">わかった！ ゲームに もどる</button></div>
+  </div>
+</body>
+</html>
