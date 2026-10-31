@@ -31,7 +31,8 @@
   const nextCtx = nextCanvas.getContext('2d');
 
   let selectedStage = 0;
-  let soundOn = false;
+  let soundOn = true;
+  let lastMotionSound = -Infinity;
   let audioContext = null;
   let toastTimer = null;
   const heldControls = new Map();
@@ -40,7 +41,7 @@
 
   const game = {
     phase: 'home', board: [], current: null, next: null, bag: [],
-    score: 0, lines: 0, level: 1, stage: 0,
+    score: 0, lines: 0, clearEvents: 0, level: 1, stage: 0,
     fallClock: 0, lastTime: null, lastDraw: 0
   };
 
@@ -132,11 +133,15 @@
     game.current = null;
     game.score = 0;
     game.lines = 0;
+    game.clearEvents = 0;
     game.level = stage + 1;
     game.fallClock = 0;
     game.lastTime = null;
     game.lastDraw = 0;
     game.phase = 'playing';
+    // サウンドはスタートボタンを押した操作をきっかけに有効化（iPhone対応）。
+    prepareAudio();
+    playTone(620, .09, 'sine', .045);
     $('partnerEmoji').textContent = STAGES[stage].emoji;
     $('partnerName').textContent = STAGES[stage].partner;
     $('gameTip').textContent = stage === 0 ? 'うすい ブロックが おちる ばしょの めじるし！' : 'すきまを つくらずに ならべよう！';
@@ -168,6 +173,7 @@
     if (game.phase !== 'playing' || !game.current) return;
     if (!collision(game.current, dx, 0)) {
       game.current.x += dx;
+      playMotionSound(385);
       drawBoard();
     }
   }
@@ -191,7 +197,8 @@
         game.current.x += dx;
         game.current.y += dy;
         game.current.matrix = candidate;
-        playTone(520, 0.065);
+        playTone(560, .075, 'sine', .05);
+        playTone(760, .075, 'sine', .035, .045);
         drawBoard();
         return;
       }
@@ -202,7 +209,7 @@
     if (game.phase !== 'playing' || !game.current) return;
     if (!collision(game.current, 0, 1)) {
       game.current.y++;
-      if (manual) { game.score += 1; refreshHUD(); }
+      if (manual) { game.score += 1; playMotionSound(280); refreshHUD(); }
     } else {
       lockPiece();
     }
@@ -217,7 +224,7 @@
       distance++;
     }
     game.score += distance * 2;
-    playTone(190, 0.115, 'triangle');
+    playTone(150, .125, 'triangle', .075);
     lockPiece();
     drawBoard();
   }
@@ -250,17 +257,20 @@
     }
 
     if (cleared) {
-      const oldLevel = game.level;
+      // 1〜4列を同時に消しても「1回」と数え、10回ごとに表示します。
+      game.clearEvents++;
       game.lines += cleared;
       game.score += SCORE_BY_LINES[Math.min(cleared, 4)];
       game.level = stageNumber();
-      if (game.level > oldLevel) {
-        showToast(`🌟 レベル ${game.level}！\nすごいね！`);
-        playMelody([523, 659, 784, 988]);
+      if (game.clearEvents % 10 === 0) {
+        showToast(`🎉 ${game.clearEvents}かい けせたよ！\nすごい！ そのちょうし！`);
+        playMelody([523, 659, 784, 1046, 1175]);
       } else {
-        showToast(`✨ ${cleared}れつ そろった！\n+${SCORE_BY_LINES[Math.min(cleared, 4)]}てん！`);
-        playMelody([523, 659, 784]);
+        // メッセージを出さない回にも、列が消えた音は鳴ります。
+        playMelody([660, 880, 1046]);
       }
+    } else {
+      playTone(230, .055, 'triangle', .035);
     }
     saveBest();
     refreshHUD();
@@ -273,6 +283,7 @@
 
   function finishGame() {
     game.phase = 'over';
+    playMelody([392, 330, 262]);
     game.current = null;
     clearHold();
     saveBest();
@@ -473,29 +484,52 @@
     }
   }
 
-  function playTone(frequency, duration = .09, wave = 'sine') {
-    if (!soundOn) return;
+  // Web Audio API で短いオリジナル効果音を合成します（外部音源・通信なし）。
+  // ブラウザの制限により、最初の「スタート」タップ後から鳴ります。
+  function prepareAudio() {
+    if (!soundOn) return false;
     try {
       const Audio = window.AudioContext || window.webkitAudioContext;
-      if (!Audio) return;
+      if (!Audio) return false;
       if (!audioContext) audioContext = new Audio();
       if (audioContext.state === 'suspended') audioContext.resume().catch(() => {});
+      return true;
+    } catch (_) { return false; }
+  }
+
+  function playTone(frequency, duration = .09, wave = 'sine', volume = .05, delay = 0) {
+    if (!prepareAudio()) return;
+    try {
+      const start = audioContext.currentTime + delay;
       const oscillator = audioContext.createOscillator();
       const gain = audioContext.createGain();
       oscillator.type = wave;
-      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-      gain.gain.setValueAtTime(.075, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + duration);
+      oscillator.frequency.setValueAtTime(frequency, start);
+      gain.gain.setValueAtTime(Math.max(.001, volume), start);
+      gain.gain.exponentialRampToValueAtTime(.001, start + duration);
       oscillator.connect(gain);
       gain.connect(audioContext.destination);
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + duration);
-    } catch (_) { /* 音声に対応していなくてもゲームは動きます */ }
+      oscillator.start(start);
+      oscillator.stop(start + duration + .01);
+    } catch (_) { /* 音に対応しない端末でもゲームは継続 */ }
+  }
+
+  function playMotionSound(frequency) {
+    // 長押し中に効果音が連続しすぎないよう間引きます。
+    const now = performance.now();
+    if (now - lastMotionSound < 75) return;
+    lastMotionSound = now;
+    playTone(frequency, .04, 'sine', .025);
   }
 
   function playMelody(notes) {
     if (!soundOn) return;
-    notes.forEach((note, index) => setTimeout(() => playTone(note, .12), index * 90));
+    notes.forEach((note, index) => playTone(note, .105, 'sine', .052, index * .09));
+  }
+
+  function updateSoundButton() {
+    $('soundButton').textContent = soundOn ? '🔊 おと オン' : '🔇 おと オフ';
+    $('soundButton').setAttribute('aria-pressed', String(soundOn));
   }
 
   function performAction(action) {
@@ -541,11 +575,11 @@
     const helpCards = $('exampleCards').cloneNode(true);
     helpCards.removeAttribute('id');
     $('helpExamples').appendChild(helpCards);
+    updateSoundButton();
     $('soundButton').addEventListener('click', () => {
       soundOn = !soundOn;
-      $('soundButton').textContent = soundOn ? '🔊 おと オン' : '🔇 おと オフ';
-      $('soundButton').setAttribute('aria-pressed', String(soundOn));
-      if (soundOn) playTone(660, .1);
+      updateSoundButton();
+      if (soundOn) playMelody([660, 880]);
     });
 
     document.querySelectorAll('.control-btn').forEach((button) => {
