@@ -65,26 +65,26 @@
   .score-box{flex:1;max-width:154px;min-width:0;padding:2px 6px 1px;border-radius:9px;flex-direction:row;justify-content:space-evenly;gap:5px}
   .score-box>span{font-size:10px}
   .score-box strong{font-size:20px;line-height:1}
-  .play-area{flex:1;min-height:0;height:100%;width:min(100%,920px);max-width:920px;display:grid;grid-template-columns:minmax(112px,150px) max-content minmax(112px,150px);align-items:stretch;justify-content:center;justify-items:center;gap:clamp(8px,2vw,18px);margin:0 auto}
+  .play-area{flex:1;min-height:0;height:100%;width:min(100%,760px);max-width:760px;display:grid;grid-template-columns:minmax(108px,122px) max-content minmax(108px,122px);align-items:center;justify-content:center;justify-items:center;gap:clamp(4px,1vw,10px);margin:0 auto}
   .board-column{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:0;min-width:0}
   .board-frame{box-sizing:border-box;max-width:none;width:auto;height:100%;aspect-ratio:1/2;margin:0;padding:3px;border:2px solid white;border-radius:9px;box-shadow:0 3px 0 #bed5ed,0 5px 10px #2e588b25}
   .board-frame canvas{width:100%;height:100%;aspect-ratio:1/2;border-radius:5px}
-  .game-pad-panel{grid-column:1;grid-row:1;gap:6px;align-self:center;width:100%;justify-content:center}
-  .game-side-panel{grid-column:3;grid-row:1;gap:7px;align-self:center;width:100%;justify-content:center}
-  .dpad{width:min(39dvh,190px,27vw);aspect-ratio:1;gap:4px}
+  .game-pad-panel{grid-column:1;grid-row:1;gap:5px;align-self:center;width:auto;justify-content:center;justify-self:end}
+  .game-side-panel{grid-column:3;grid-row:1;gap:6px;align-self:center;width:auto;justify-content:center;justify-self:start}
+  .dpad{width:min(35dvh,164px,23vw);aspect-ratio:1;gap:4px}
   .dpad .control-btn{min-height:0;border-radius:10px}
   .dpad .control-symbol{font-size:clamp(19px,4dvh,27px)}
   .dpad .control-btn span:last-child{font-size:clamp(9px,1.3vw,11px)}
   .pad-label{font-size:12px}
   .pad-caption{font-size:9px;line-height:1.15}
-  .game-side-panel .next-card{width:min(100%,120px);padding:4px;border-radius:9px}
+  .game-side-panel .next-card{width:min(100%,108px);padding:4px;border-radius:9px}
   .game-side-panel .next-card .aside-label{font-size:10px;margin:0}
   .game-side-panel .next-card canvas{max-width:75px;height:49px;object-fit:contain}
-  .game-side-panel .control-rotate{width:min(100%,136px);min-height:0;height:clamp(78px,24dvh,106px);border-radius:19px;box-shadow:0 4px 0 #c8a4ef}
+  .game-side-panel .control-rotate{width:min(100%,118px);min-height:0;height:clamp(78px,23dvh,100px);border-radius:19px;box-shadow:0 4px 0 #c8a4ef}
   .game-side-panel .control-rotate .control-symbol{font-size:clamp(41px,9dvh,55px)}
   .game-side-panel .control-rotate span:last-child{font-size:14px}
   .game-side-panel .partner-card{display:none}
-  .game-side-panel .secondary-buttons{width:min(100%,160px);display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:4px;border-radius:9px}
+  .game-side-panel .secondary-buttons{width:min(100%,128px);display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:4px;border-radius:9px}
   .game-side-panel .secondary-buttons button{min-height:29px;font-size:9px;padding:2px;border-radius:7px}
   .board-tip,.pc-hint,.game-screen>.site-footer{display:none}
   .board-toast{font-size:12px;padding:8px 3px}
